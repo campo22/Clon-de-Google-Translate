@@ -1,10 +1,11 @@
 import { useReducer } from "react";
-import { Action, State } from "../types";
+import { Action, FromLanguage, Language, State } from "../types";
+import { AUTO_LANGUAGE } from "../constants";
 
 // 1.create a initialState
 const inicialState: State = {
-  fromLanguaje: "auto",
-  toLanguaje: "en",
+  fromLanguage: "auto",
+  toLanguage: "en",
   fromText: "",
   result: "",
   loading: false,
@@ -15,25 +16,26 @@ export function reducer(state: State, action: Action) {
   const { type } = action;
 
   if (type === "INTERGANGE_LANGUAGES") {
+    if (state.fromLanguage === AUTO_LANGUAGE) return state;
     // Intercambia los idiomas de origen y destino
     return {
       ...state,
-      fromLanguaje: state.toLanguaje,
-      toLanguaje: state.fromLanguaje,
+      fromLanguage: state.toLanguage,
+      toLanguage: state.fromLanguage,
     };
   }
   if (type === "SET_FROM_LANGUAGE") {
     // Establece el idioma de origen
     return {
       ...state,
-      fromLanguaje: action.payload,
+      fromLanguage: action.payload,
     };
   }
   if (type === "SET_TO_LANGUAGE") {
     // Establece el idioma de destino
     return {
       ...state,
-      toLanguaje: action.payload,
+      toLanguage: action.payload,
     };
   }
   if (type === "SET_FROM_TEXT") {
@@ -59,18 +61,18 @@ export function reducer(state: State, action: Action) {
 
 export function useStore() {
   // 3.usar el hook useReduce
-  const [{ fromLanguaje, toLanguaje, fromText, result, loading }, dispatch] =
+  const [{ fromLanguage, toLanguage, fromText, result, loading }, dispatch] =
     useReducer(reducer, inicialState);
 
   const interchageLanguages = () => {
     dispatch({ type: "INTERGANGE_LANGUAGES" });
   };
 
-  const setFromLanguage = (payload: string) => {
+  const setFromLanguage = (payload: FromLanguage) => {
     dispatch({ type: "SET_FROM_LANGUAGE", payload });
   };
 
-  const setToLanguage = (payload: string) => {
+  const setToLanguage = (payload: Language) => {
     dispatch({ type: "SET_TO_LANGUAGE", payload });
   };
 
@@ -84,8 +86,8 @@ export function useStore() {
 
   // 4. devolver el estado y el dispatch
   return {
-    fromLanguaje,
-    toLanguaje,
+    fromLanguage, // Corregido: fromLanguaje a fromLanguage
+    toLanguage, // Corregido: toLanguaje a toLanguage
     fromText,
     result,
     loading,
