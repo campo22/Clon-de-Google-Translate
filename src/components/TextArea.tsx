@@ -19,7 +19,7 @@ const getPlaceholder = ({ type, loading }: { type: SectionType, loading?: boolea
     return 'Traducción'
 }
 
-export const TextArea = ({ loading, onChange, value, autoFocus, type }: Props) => {
+export const TextArea = ({ loading, onChange, value, type }: Props) => {
 
     const styles = type === SectionType.From
         ? commonStyles
@@ -34,6 +34,7 @@ export const TextArea = ({ loading, onChange, value, autoFocus, type }: Props) =
         <Form.Control
             autoFocus={type === SectionType.From}
             as="textarea"
+            disabled={type === SectionType.To}
             placeholder={getPlaceholder({ type, loading })}
             style={styles}
             value={value}
